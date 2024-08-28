@@ -1,11 +1,14 @@
-TG: Testground.o Helper.o Course.o
-	g++ -Wall Testground.o Helper.o Course.o -o TESTGROUND
+TG: Testground.o Files.o Helper.o Course.o 
+	g++ -Wall Testground.o Files.o Helper.o Course.o -o TESTGROUND
 
 main.o: main.cpp
 	g++ -Wall -c main.cpp
 
 Testground.o: Testground.cpp 
 	g++ -Wall -c Testground.cpp
+
+Files.o: Files.hpp Files.cpp
+	g++ -Wall -c Files.cpp
 
 Helper.o: Helper.hpp Helper.cpp
 	g++ -Wall -c Helper.cpp
