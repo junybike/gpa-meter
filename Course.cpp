@@ -10,9 +10,12 @@ using namespace std;
     Course class: Public Functions Implementation 
 =================================================================================================*/
 
-Course::Course()
+Course::Course() : course_grade(PASS), course_season(FALL)
 {
-
+    memset(course_name, 0, sizeof(course_name));
+    memset(course_major, 0, sizeof(course_major));
+    memset(course_number, 0, sizeof(course_number));
+    memset(course_year, 0, sizeof(course_year));
 }
 
 Course::Course(const char* course_name, const char* course_major, const char* course_number,   
@@ -29,10 +32,11 @@ Course::Course(const char* course_name, const char* course_major, const char* co
 
 Course& Course::operator=(const Course& course)
 {
+    AssignString(this->course_name, course.course_name, sizeof(course_name));
     AssignString(this->course_major, course.course_major, sizeof(course_major));
     AssignString(this->course_number, course.course_number, sizeof(course_number));
-    AssignString(this->course_name, course.course_name, sizeof(course_name));
     AssignString(this->course_year, course.course_year, sizeof(course_year));
+    
     this->course_grade = course.course_grade;
     this->course_season = course.course_season;
 
@@ -119,6 +123,8 @@ Course ReadCourseFromFile(streampos &fd)
     Course course;
     file.read(reinterpret_cast<char *>(&course), sizeof(Course));
     fd = file.tellg();
+
+    //course.DisplayInfo(cout);
 
     return course;
 }

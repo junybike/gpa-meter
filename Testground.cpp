@@ -94,20 +94,22 @@ int main()
         Writing on Files
     =============================================================================================*/
 
-    if (WriteCourseOnFile(course0, COURSEFILEDESCRIPTOR))
-    {
-        cout << "Writing successfull" << endl;
-    }
-    else
-    {
-        cout << "Writing failed" << endl;
-    }
+    // if (WriteCourseOnFile(course0, COURSEFILEDESCRIPTOR))
+    // {
+    //     cout << "Writing successfull" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Writing failed" << endl;
+    // }
 
-    WriteCourseOnFile(course1, COURSEFILEDESCRIPTOR);
+    // WriteCourseOnFile(course1, COURSEFILEDESCRIPTOR);
 
     /*=============================================================================================
         Reading from Files
     =============================================================================================*/
+
+    cout << endl << "READING FROM FILES TESTING" << endl << endl;
 
     streampos pos = COURSEFILEDESCRIPTOR;
     Course readcourse = Course();
