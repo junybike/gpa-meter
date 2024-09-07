@@ -109,14 +109,24 @@ class Course
 =================================================================================================*/
 
 /*
-
+Creates a binary file to store all courses if the file does not exists 
 -------------------------------------------------------------------------------------------------*/
 int Initialization();
 
+/*
+Write a course detail on the binary file at position fd in the file
+-------------------------------------------------------------------------------------------------*/
+int WriteCourseOnFile(
+    const Course &course,   // a course to write in the file
+    streampos &fd           // a location in the file
+);
 
-int WriteCourseOnFile(const Course &course, streampos &fd);
-
-Course ReadCourseFromFile(streampos &fd);
+/*
+Read a course detail from the binary file at position fd in the file 
+-------------------------------------------------------------------------------------------------*/
+Course ReadCourseFromFile(
+    streampos &fd       // the location in the file
+);
 
 /*
 Prints the Grade in string with the given enumeration of the Grade
@@ -124,11 +134,17 @@ Prints the Grade in string with the given enumeration of the Grade
 void PrintGrade(
     Grade grade         // this grade will be printed in a string format
 );
+
 /*
 Prints the Season in string with the given enumeration of the Season
 -------------------------------------------------------------------------------------------------*/
 void PrintSeason(
     Season season       // this season will be printed in a string format
 );
+
+/*
+Display all courses in the binary file
+-------------------------------------------------------------------------------------------------*/
+int DisplayAllCourses();
 
 #endif

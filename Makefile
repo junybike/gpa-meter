@@ -1,3 +1,6 @@
+RUN: main.o Files.o Helper.o Course.o UI.o ScenarioControl.o
+	g++ -Wall main.o Files.o Helper.o Course.o UI.o ScenarioControl.o -o RUN
+
 TG: Testground.o Files.o Helper.o Course.o 
 	g++ -Wall Testground.o Files.o Helper.o Course.o -o TESTGROUND
 
@@ -15,6 +18,12 @@ Helper.o: Helper.hpp Helper.cpp
 
 Course.o: Course.hpp Course.cpp
 	g++ -Wall -c Course.cpp
+
+UI.o: UI.hpp UI.cpp
+	g++ -Wall -c UI.cpp
+
+ScenarioControl.o: ScenarioControl.hpp ScenarioControl.cpp
+	g++ -Wall -c ScenarioControl.cpp
 
 clean:
 	rm -f *.o *.gch

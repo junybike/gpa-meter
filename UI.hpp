@@ -1,20 +1,25 @@
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef UI_HPP
+#define UI_HPP
 
 /*=================================================================================================
-    Files.hpp 
+    UI.hpp
 =================================================================================================*/
 
-#include <fstream>
-using namespace std;
+#include <iostream>
+#include "ScenarioControl.hpp"
 
 /*=================================================================================================
-    Global variables
+    Functions
 =================================================================================================*/
 
-#define DIRECTORY "data/"
+/*
+Displays the main menu UI
+-------------------------------------------------------------------------------------------------*/
+int Main_menu();
 
-extern streampos COURSEFILEDESCRIPTOR;          // the file descriptor (a location in the file)
-const string COURSEFILE = "data/Courses.bin";   // the file location 
+/*
+Activates the main menu UI loop
+-------------------------------------------------------------------------------------------------*/
+int ActivateUI();
 
 #endif

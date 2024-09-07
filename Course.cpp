@@ -91,7 +91,7 @@ void Course::DisplayInfo(std::ostream &out) const
 =================================================================================================*/
 
 /*=================================================================================================
-    Functions Implementation 
+    Function Implementation 
 =================================================================================================*/
 
 int WriteCourseOnFile(const Course &course, streampos &fd)
@@ -143,7 +143,7 @@ int Initialization()
         file.close();
         return 1;
     }
-    return 0;
+    return 1;
 }
 
 /*
@@ -212,4 +212,34 @@ void PrintSeason(Season season)
             cout << "N/A";
             break;
     }
+}
+
+int DisplayAllCourses()
+{
+    ifstream file(COURSEFILE, ios::binary);
+    if (!file)
+    {
+        cout << "CREATE EXCEPTION: Failed to open file" << endl;
+    }
+
+    Course course;
+    int count = 0;
+
+    while (file.read(reinterpret_cast<char *>(&course), sizeof(course)))
+    {
+        course.DisplayInfo(cout);
+        count++;
+    }
+
+    if (file.eof()) 
+    {
+        file.clear();
+    }
+    else if (file.fail()) 
+    {
+        cout << "CREATE EXCEPTION: Failed to read file" << endl;
+    } 
+    file.close();
+
+    return count;
 }
