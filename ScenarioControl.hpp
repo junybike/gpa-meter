@@ -12,7 +12,8 @@
 Controls which scenario to run by taking an input parameter of 'choice'
 -------------------------------------------------------------------------------------------------*/
 int Scenario_control(
-    int choice          // decides which scenario to run
+    int choice,         // runs the following scenario
+    int subchoice       // runs the following sub scenario
 );
 
 /*
@@ -31,6 +32,16 @@ Display all courses stored in the file
 int Display_transcript();
 
 /*
-Load or edit the courses in the file
+
 -------------------------------------------------------------------------------------------------*/
-int Edit_transcript();
+int AddCourse();
+
+/*
+
+-------------------------------------------------------------------------------------------------*/
+int EditCourse();
+
+/*
+
+-------------------------------------------------------------------------------------------------*/
+int DeleteCourse();

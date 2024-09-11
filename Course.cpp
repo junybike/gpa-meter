@@ -19,13 +19,14 @@ Course::Course() : course_grade(PASS), course_season(FALL)
 }
 
 Course::Course(const char* course_name, const char* course_major, const char* course_number,   
-        const char* course_year, const Grade course_grade, const Season course_season)
+        const char* course_year, const int course_unit, const Grade course_grade, const Season course_season)
 {
     AssignString(this->course_name, course_name, sizeof(this->course_name));
     AssignString(this->course_major, course_major, sizeof(this->course_major));
     AssignString(this->course_number, course_number, sizeof(this->course_number));
     AssignString(this->course_year, course_year, sizeof(this->course_year));
 
+    this->course_unit = course_unit;
     this->course_grade = course_grade;
     this->course_season = course_season;
 }
@@ -37,6 +38,7 @@ Course& Course::operator=(const Course& course)
     AssignString(this->course_number, course.course_number, sizeof(course_number));
     AssignString(this->course_year, course.course_year, sizeof(course_year));
     
+    this->course_unit = course.course_unit;
     this->course_grade = course.course_grade;
     this->course_season = course.course_season;
 
@@ -80,6 +82,7 @@ void Course::DisplayInfo(std::ostream &out) const
     out << setw(6) << course_major
          << setw(6) << course_number
          << setw(33) << course_name
+         << setw(5) << course_unit
          << setw(7) << course_year
          << setw(5);
     PrintSeason(GetCourseSeason());
@@ -96,10 +99,16 @@ void Course::DisplayInfo(std::ostream &out) const
 
 int WriteCourseOnFile(const Course &course, streampos &fd)
 {
+    if (!ValidateCourse(course))
+    {
+        cout << "CREATE EXCEPTION: Not a valid course" << endl;
+        return 0;
+    }
+
     ofstream file(COURSEFILE, ios::binary | ios::in | ios::out);
     if (!file)
     {
-        cout << "Failed to open course file" << endl;
+        cout << "CREATE EXCEPTION: Failed to open course file" << endl;
         return 0;
     }
 
@@ -127,6 +136,12 @@ Course ReadCourseFromFile(streampos &fd)
     //course.DisplayInfo(cout);
 
     return course;
+}
+
+int ValidateCourse(const Course &course)
+{
+
+    return 1;
 }
 
 int Initialization()
@@ -240,6 +255,65 @@ int DisplayAllCourses()
         cout << "CREATE EXCEPTION: Failed to read file" << endl;
     } 
     file.close();
+    
+    if (count == 0)
+    {
+        cout << endl << "Transcript is empty" << endl << endl;
+    }
 
     return count;
+}
+
+float* CalculateGPA()
+{
+    float C_GradePoint = 0, U_GradePoint = 0, L_GradePoint = 0;
+    float C_Unit = 0, U_Unit = 0, L_Unit = 0;
+
+    float* gpa_list = new float[3];
+    for (int i = 0; i < 3; i++) gpa_list[i] = 0;
+
+    float max_gpa = 4 + 1/3;
+
+    if (gpa_list == NULL)
+    {
+        cout << "CREATE EXCEPTION: Failed to allocate memory for GPA list" << endl;
+    }
+
+    ifstream file(COURSEFILE, ios::binary);
+    if (!file)
+    {
+        cout << "CREATE EXCEPTION: Failed to open file" << endl;
+    }
+
+    Course course;
+
+    while (file.read(reinterpret_cast<char *>(&course), sizeof(course)))
+    {
+        Grade grade = course.GetCourseGrade();
+
+        if (grade == PASS || grade == WITHDRAWN)
+        {
+            continue;
+        }
+
+        if ((course.GetCourseNumber())[0] == '3' || (course.GetCourseNumber())[0] == '4')
+        {
+            U_GradePoint += (max_gpa - course.GetCourseGrade() * 1/3) * course.GetCourseUnit();
+            U_Unit += course.GetCourseUnit();
+        }
+        else
+        {
+            L_GradePoint += (max_gpa - course.GetCourseGrade() * 1/3) * course.GetCourseUnit();
+            L_Unit += course.GetCourseUnit();
+        }
+
+        C_GradePoint += (max_gpa - course.GetCourseGrade() * 1/3) * course.GetCourseUnit();
+        C_Unit += course.GetCourseUnit();
+    }
+    
+    gpa_list[0] = C_GradePoint / C_Unit;
+    gpa_list[1] = U_GradePoint / U_Unit;
+    gpa_list[2] = L_GradePoint / L_Unit;
+
+    return gpa_list;
 }

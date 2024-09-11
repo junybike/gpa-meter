@@ -1,8 +1,8 @@
 RUN: main.o Files.o Helper.o Course.o UI.o ScenarioControl.o
 	g++ -Wall main.o Files.o Helper.o Course.o UI.o ScenarioControl.o -o RUN
 
-TG: Testground.o Files.o Helper.o Course.o 
-	g++ -Wall Testground.o Files.o Helper.o Course.o -o TESTGROUND
+TEST: Testground.o Files.o Helper.o Course.o 
+	g++ -Wall Testground.o Files.o Helper.o Course.o -o TEST
 
 main.o: main.cpp
 	g++ -Wall -c main.cpp
