@@ -135,7 +135,7 @@ Course ReadCourseFromFile(
 Checks if the attributes of the course are valid. 
 -------------------------------------------------------------------------------------------------*/
 int ValidateCourse(
-    const Course &course    // the course to check 
+    const Course &course    // the course to validate
 );
 
 /*

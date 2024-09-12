@@ -119,7 +119,7 @@ int WriteCourseOnFile(const Course &course, streampos &fd)
 
     return 1;
 }
-
+/*-----------------------------------------------------------------------------------------------*/
 Course ReadCourseFromFile(streampos &fd)
 {
     ifstream file(COURSEFILE, ios::binary);
@@ -137,13 +137,65 @@ Course ReadCourseFromFile(streampos &fd)
 
     return course;
 }
-
+/*-----------------------------------------------------------------------------------------------*/
 int ValidateCourse(const Course &course)
 {
+    if (strlen(course.GetCourseMajor()) > 5)
+    {
+        cout << "CREATE EXCEPTION: Major input size limit (5) exceeded" << endl;
+        return 0;
+    }
+    if (strlen(course.GetCourseNumber()) > 5)
+    {
+        cout << "CREATE EXCEPTION: Number input size limit (5) exceeded" << endl;
+        return 0;
+    }
+    if (strlen(course.GetCourseName()) > 30)
+    {
+        cout << "CREATE EXCEPTION: Name input size limit (30) exceeded" << endl;
+        return 0;
+    }
+    if (strlen(course.GetCourseYear()) > 5)
+    {
+        cout << "CREATE EXCEPTION: Year input size limit (5) exceeded" << endl;
+        return 0;
+    }
+    if (course.GetCourseUnit() != 3 && course.GetCourseUnit() != 4)
+    {
+        cout << "CREATE EXCEPTION: Unit must be 3 or 4" << endl;
+        return 0;
+    }
+
+    ifstream file(COURSEFILE, ios::binary);
+    if (!file)
+    {
+        cout << "CREATE EXCEPTION: Failed to open file" << endl;
+    }
+
+    Course course_in_file;
+
+    while (file.read(reinterpret_cast<char *>(&course_in_file), sizeof(course_in_file)))
+    {
+        if (course_in_file == course)
+        {
+            cout << "CREATE EXCEPTION: Course already exists in the semester" << endl;
+            return 0;
+        }
+    }
+
+    if (file.eof()) 
+    {
+        file.clear();
+    }
+    else if (file.fail()) 
+    {
+        cout << "CREATE EXCEPTION: Failed to read file" << endl;
+    } 
+    file.close();
 
     return 1;
 }
-
+/*-----------------------------------------------------------------------------------------------*/
 int Initialization()
 {
     filesystem::create_directory(DIRECTORY);
@@ -160,9 +212,7 @@ int Initialization()
     }
     return 1;
 }
-
-/*
--------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------*/
 void PrintGrade(Grade grade)
 {
     switch(grade)
@@ -208,8 +258,7 @@ void PrintGrade(Grade grade)
             break;
     }
 }
-/*
--------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------*/
 void PrintSeason(Season season)
 {
     switch(season)
@@ -228,7 +277,7 @@ void PrintSeason(Season season)
             break;
     }
 }
-
+/*-----------------------------------------------------------------------------------------------*/
 int DisplayAllCourses()
 {
     ifstream file(COURSEFILE, ios::binary);
@@ -263,7 +312,7 @@ int DisplayAllCourses()
 
     return count;
 }
-
+/*-----------------------------------------------------------------------------------------------*/
 float* CalculateGPA()
 {
     float C_GradePoint = 0, U_GradePoint = 0, L_GradePoint = 0;

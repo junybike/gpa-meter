@@ -32,11 +32,11 @@ int AddEdit_submenu()
     int choice;
     do
     {
-        cout << endl << "===Add/Edit===" << endl << endl;
+        cout << "===Add/Edit===" << endl << endl;
         cout << "1) Add new course" << endl;
         cout << "2) Edit a course" << endl;
         cout << "3) Delete a course" << endl;
-        cout << "0) Main menu" << endl;
+        cout << "0) Main menu" << endl << endl;
 
         cout << "Choose an option (0-3): ";
         cin >> choice;
